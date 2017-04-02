@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="strawberry23">
+<head>
+    <meta charset="UTF-8">
+    <title>S3 Upload</title>
+</head>
+<body ng-controller="uploadController">
+
+    <form>
+        <input name="file" id="file" ng-model="object.file" type="file" file />
+        <button type="button" ng-click="showFileAttributes(object)">Upload</button>
+    </form>
+
+<script src="js/angular.min.js"></script>
+<script src="js/strawberry.js"></script>
+</body>
+</html>

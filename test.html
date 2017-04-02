@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page</title>
+    <!--
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.6.6.min.js"></script>
+    -->
+    <script src="js/aws-sdk.js"></script>
+</head>
+<body>
+<h1>Test Page for AWS</h1>
+<input type="file" id="file-chooser" />
+<button id="upload-button">Upload to S3</button>
+<button onclick="javascript:showBucket();">Show Bucket</button>
+<div id="results"></div>
+
+
+<script type="text/javascript">
+
+    function showBucket() {
+        // create the AWS.Request object
+        var request = new AWS.S3().listObjects({Bucket: 'jaydot2core'});
+
+        // register a callback to report on the data
+        request.on('success', function(resp) {
+            console.log(resp.data); // log the successful data response
+        });
+
+        // send the request
+        request.send();
+    }
+    // See the Configuring section to configure credentials in the SDK
+    var creds = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: 'us-east-1_4rStFSal1',
+        IdentityId: 'us-east-1_4rStFSal1',
+        Logins: {
+            'www.amazon.com': 'AMAZONTOKEN'
+        }
+    });
+    AWS.config.credentials = creds;
+    console.debug(AWS.config.credentials);
+
+    // Configure your region
+    AWS.config.region = 'us-west-2';
+
+    var bucket = new AWS.S3({params: {Bucket: 'jaydot2core'}});
+
+    var fileChooser = document.getElementById('file-chooser');
+    var button = document.getElementById('upload-button');
+    var results = document.getElementById('results');
+    button.addEventListener('click', function() {
+        var file = fileChooser.files[0];
+        if (file) {
+            console.debug(AWS.config.credentials);
+            results.innerHTML = '';
+
+            var params = {Key: file.name, ContentType: file.type, Body: file};
+            bucket.upload(params, function (err, data) {
+                results.innerHTML = err ? 'ERROR!' : 'UPLOADED.';
+                if(err) {
+                    console.error(err.message);
+                }
+            });
+        } else {
+            results.innerHTML = 'Nothing to upload.';
+        }
+    }, false);
+</script>
+</body>
+</html>

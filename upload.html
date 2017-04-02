@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AWS Upload Test</title>
+    <script src="js/aws-sdk.js"></script>
+</head>
+<body>
+<input type="file" id="file-chooser" accept="image/*" />
+<button id="upload-button" onclick="javascript:test();">Upload to S3</button>
+<div id="results"></div>
+<script>
+    function test() {
+        var upload = document.getElementById("file-chooser");
+        console.debug("Value is " + upload.value);
+    }
+</script>
+</body>
+</html>
